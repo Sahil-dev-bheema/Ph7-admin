@@ -36,7 +36,7 @@ function PoolsTable({ onAddClick }) {
     try {
       const adminToken = localStorage.getItem("admin_token");
 
-      const res = await axiosInstance.get("/admin/pools", {
+      const res = await axiosInstance.get("/pool/get-pools", {
         headers: { Authorization: `Bearer ${adminToken}` },
         withCredentials: true,
       });
@@ -81,7 +81,7 @@ function PoolsTable({ onAddClick }) {
 
     try {
       const adminToken = localStorage.getItem("admin_token");
-      const res = await axiosInstance.delete(`/admin/pool/${id}`, {
+      const res = await axiosInstance.delete(`/pool/delete-pool/${id}`, {
         headers: { Authorization: `Bearer ${adminToken}` },
       });
 

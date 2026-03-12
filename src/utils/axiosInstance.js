@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://ph7lootlotterybackend-v1-production.up.railway.app/api",
+  baseURL: "http://192.168.1.14:3000/api/admin",
   withCredentials: true,
   headers: {
     Accept: "application/json",
@@ -13,22 +13,22 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     const url = config.url || "";
-    let token = "";
 
-    // ✅ ADMIN APIs (ONLY /admin)
-    if (url.startsWith("/admin")) {
-      token = localStorage.getItem("admin_token");
-    }
-  
-    // ✅ sanitize token
-    token = String(token || "")
-      .replace(/^"|"$/g, "")
-      .replace(/^Bearer\s+/i, "");
+    const publicRoutes = ["/login", "/forgot-password", "/reset-password"];
+    const isPublicRoute = publicRoutes.some((route) => url.startsWith(route));
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    } else {
-      delete config.headers.Authorization;
+    if (!isPublicRoute) {
+      let token = localStorage.getItem("admin_token");
+
+      token = String(token || "")
+        .replace(/^"|"$/g, "")
+        .replace(/^Bearer\s+/i, "");
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        delete config.headers.Authorization;
+      }
     }
 
     return config;
@@ -41,19 +41,10 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
-    const url = error.config?.url || "";
 
-    const isAdminApi = url.startsWith("/admin");
-
-    // ✅ Handle unauthorized
     if (status === 401) {
-      if (isAdminApi) {
-        // 🔥 Admin logout
-        localStorage.removeItem("adminUser");
-        localStorage.removeItem("admin_token");
-      }
-
-      // 🔔 Notify app (AuthContext / listeners)
+      localStorage.removeItem("adminUser");
+      localStorage.removeItem("admin_token");
       window.dispatchEvent(new Event("authChanged"));
     }
 

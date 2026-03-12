@@ -111,7 +111,7 @@ const Pools = () => {
        const adminToken = localStorage.getItem("admin_token");
 
       const res = await axiosInstance.post(
-        "/admin/add-pools",
+        "/pool/add-pools",
         formData,
         {
           headers: {

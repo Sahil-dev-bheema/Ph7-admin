@@ -18,7 +18,7 @@ const AdminNavbar = () => {
   const logout = () => {
     localStorage.removeItem("admin_token");
     localStorage.removeItem("adminUser");
-    navigate("/admin");
+    navigate("/");
   };
 
   // Close dropdown on outside click

@@ -134,7 +134,7 @@ export default function WithdrawlBox() {
   const adminRole = String(admin?.role || "").toLowerCase();
   const adminId = adminRole === "admin" ? admin?._id || admin?.id : null;
 
-  const LIST_ENDPOINT = "/admin/get-withdraw-requests";
+  const LIST_ENDPOINT = "/payment/get-withdraw-requests";
 
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);

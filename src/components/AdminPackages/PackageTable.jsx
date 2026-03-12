@@ -32,7 +32,7 @@ function PackageTable() {
 
       const token = localStorage.getItem("admin_token");
   
-      const res = await axiosInstance.get("/package", {
+      const res = await axiosInstance.get("/package/get-package", {
         headers: { Authorization: `Bearer ${token}` },
    
       });
@@ -67,7 +67,7 @@ function PackageTable() {
     try {
       const token = localStorage.getItem("admin_token");
       // ✅ adjust endpoint if your backend is different
-      await axiosInstance.delete(`admin/package/delete-package/${pkg.id}`, {
+      await axiosInstance.delete(`/package/delete-package/${pkg.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -123,7 +123,7 @@ function PackageTable() {
       const token = localStorage.getItem("admin_token");
       // ✅ adjust endpoint if your backend is different
       const res = await axiosInstance.patch(
-        `admin/package/update-package/${editing.id}`,
+        `/package/update-package/${editing.id}`,
         {
           package_name: form.name.trim(),
           package_price: Number(form.price),
